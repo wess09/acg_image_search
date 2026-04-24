@@ -122,27 +122,29 @@ def adjust_tags(tags: List[str], attempt: int) -> List[str]:
 @plugin.mount_sandbox_method(
     SandboxMethodType.TOOL,
     name="acg_image_search",
-    description="ACG图片获取工具 用于获取二次元美图（涩图）",
+    description="二次元高清插画/壁纸/同人图获取工具。仅在用户明确索要高质量美图/涩图时调用，【严禁】用于获取“表情包”、“梗图”或聊天配图。",
 )
 async def acg_image_search(_ctx: AgentCtx, tags: List[str]) -> bytes:
-    """ACG图片搜索
+    """ACG高质量插画搜索工具
     
-    根据提供的标签列表搜索并返回图片字节流，仅返回.jpg格式图片。
-    最多支持3个标签同时搜索。
-    当搜索结果为空时，会自动尝试调整标签组合进行多次搜索。
+    专门用于根据标签获取高质量的二次元人物插画、壁纸或同人美术作品，仅返回.jpg格式图片。
+    
+    【行为约束 - 必读】
+    1. 绝非表情包工具：本工具返回的均为完整的高清艺术画作。当用户想要“表情包”、“梗图”、“沙雕图”或聊天辅助配图时，绝对不要调用此工具。
+    2. 标签规范：传入的 tags 必须是具体的【作品名】、【角色名】或【美术特征】（如黑丝、女仆等）。严禁在 tags 中加入“表情包”、“搞笑”、“meme”等词汇。
+    
+    【搜索规则】
+    - 最多支持3个标签同时搜索。
+    - 当搜索结果为空时，会自动尝试调整标签组合进行多次搜索。
     
     Args:
-        tags: 搜索标签列表，最多3个标签
+        tags: 搜索标签列表，最多3个标签。例如：["初音未来", "初音ミク"] 或 ["明日方舟", "能天使"]。
         
     Returns:
-        bytes: 图片字节流。如果最终找不到有效图片则返回错误消息的字节流，您需要自行接受图片字节流
+        bytes: 图片字节流。如果最终找不到有效图片则返回错误消息的字节流，您需要自行接受图片字节流。
         
     Raises:
         ValueError: 如果标签数量超过限制或为空
-        
-    Examples:
-        acg_image_search(["初音未来"])
-        acg_image_search(["明日方舟", "能天使"])
     """
     if not tags:
         raise ValueError("至少需要提供一个搜索标签")
