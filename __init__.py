@@ -11,7 +11,7 @@ plugin = NekroPlugin(
     name="ACG图片搜索插件",
     module_name="acg_image_search",
     description="提供二次元图片搜索功能",
-    version="1.1.0",  # 版本号更新
+    version="1.2.0",
     author="XGGM",
     url="https://github.com/XG2020/acg_image_search",
 )
@@ -122,10 +122,10 @@ def adjust_tags(tags: List[str], attempt: int) -> List[str]:
 @plugin.mount_sandbox_method(
     SandboxMethodType.TOOL,
     name="acg_image_search",
-    description="二次元图片搜索，获取图片字节流。当结果为空时会自动调整标签重试",
+    description="ACG图片获取工具 用于获取二次元美图（涩图）",
 )
 async def acg_image_search(_ctx: AgentCtx, tags: List[str]) -> bytes:
-    """二次元图片搜索
+    """ACG图片搜索
     
     根据提供的标签列表搜索并返回图片字节流，仅返回.jpg格式图片。
     最多支持3个标签同时搜索。
@@ -135,7 +135,7 @@ async def acg_image_search(_ctx: AgentCtx, tags: List[str]) -> bytes:
         tags: 搜索标签列表，最多3个标签
         
     Returns:
-        bytes: 图片字节流。如果最终找不到有效图片则返回错误消息的字节流
+        bytes: 图片字节流。如果最终找不到有效图片则返回错误消息的字节流，您需要自行接受图片字节流
         
     Raises:
         ValueError: 如果标签数量超过限制或为空
